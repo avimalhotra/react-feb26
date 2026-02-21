@@ -1,6 +1,4 @@
-
 export default function Course({name,duration=0,num, checkClick}){
-          
           
      return (
           <section className="card mb-3">

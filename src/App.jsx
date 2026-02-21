@@ -1,102 +1,82 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import Course from "./Course";
-import { useState } from "react";               
-import Greet from "./Greets";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
+import { useState } from "react";
 
 export default function App(){
 
-  const cars = ['Toyota', 'Suzuki', 'Honda', 'Ford', 'BMW'];
-  const car = { brand: 'Suzuki', model: 'Swift', power: 82, torque: 112, price: 900000};
-  const data= [
-                {"name": "swift", "type": "hatchback", "price":850000},
-                {"name": "dzire", "type": "sedan", "price":980000},
-                {"name": "ciaz", "type": "sedan", "price":1100000},
-                {"name": "baleno", "type": "hatchback", "price":880000},
-                {"name": "fronx", "type": "hatchback", "price":1150000},
-                {"name": "brezza", "type": "suv", "price":1250000},
-                {"name": "grand vitara", "type": "suv", "price":1990000},
-                {"name": "invicto", "type": "mpv", "price":2990000},
-                {"name": "alto", "type": "hatchback", "price":380000},
-                {"name": "s presso", "type": "hatchback", "price":350000},
-                {"name": "wagon r", "type": "hatchback", "price":500000},
-                {"name": "jimny", "type": "suv", "price":1400000}
-            ];
+    // console.log("Hello react");
+
+    const [count,setCount]=useState(0);
+    const [name,setName]=useState("");
+    const [age,setAge]=useState(0);
+    const [car,setCar]=useState({name:"", power:0, torque:0});
+    const [cars,setCars]=useState(["swift","brezza"]);
     
-    const hatch=data.filter(elem=>elem.type=="hatchback");
-    console.log(hatch);
+    console.log(car);
     
 
-   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-   const even=numbers.filter((elem)=>elem%2==0);
-   const sum=numbers.reduce((x,y)=>x+y);
-   const boo=true;
+    function handleClick(){
+      // setCount(count+1);
+      // setCount(count+2);
+      // setCount(count+5);
+      setCount(count=>count+1);
+      setCount(count=>count+2);
+    }
 
-  //  console.log( sum );
-   
-  //  console.log( even );
+    function changeCar(){ 
+        // setCar({power:82});    
+        // setCar({...car, power:82, torque:112});    
+    }
 
+    function changeCarData(e){
+      const {name,value}=e.target;
+      // console.log(e.target.name, e.target.value);
+      
+      setCar({...car, [name]:value });
+    }    
 
-  const [counter,setCounter]=useState(0);       // 2
-
-
+    
   return (
     <div className="container">
       <Header />
       <main>
         <h2>Main Page</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo quam eaque, labore porro quis rerum veniam veritatis alias, perspiciatis accusamus error. Doloremque est beatae expedita hic fugit eaque perspiciatis debitis.</p>
-       
-        {/* <Course name="React" duration="4 months" num={pi} checkClick={handleClick} /> */}
-        {/* <Course name="Angular" duration="3 months" num={pi} checkClick={handleClick}/> */}
+        <button className="btn btn-primary me-3" onClick={()=>setCount(count+1)}>Increase</button>
+        <button className="btn btn-primary me-3" onClick={()=>setCount(count-1)}>Decrease</button>
+        <button className="btn btn-primary me-3" onClick={()=>setCount(0)}>Reset</button>
+        <output>{count}</output>
+
+        <hr />
+        <button className="btn btn-secondary" onClick={handleClick}>Change</button>
 
         <hr />
 
-        {/* 4 */}
-        <button className="btn btn-outline-primary m-3" onClick={()=>setCounter(i=>i+1)}>Increment</button>
-        <button className="btn btn-outline-primary m-3" onClick={()=>setCounter(i=>i-1)}>Decrement</button>
-        <button className="btn btn-outline-primary m-3" onClick={()=>setCounter(i=>2*i)}>Double</button>
-        <button className="btn btn-outline-primary m-3" onClick={()=>setCounter(i=>i*i)}>Exponential</button>
-        <button className="btn btn-outline-primary m-3" onClick={()=>setCounter(0)}>Reset</button>
-        {/* 3 */}
-        <output>Counter: {counter}</output>
+      <div className="row align-items-center">
+        <div className="col-auto"><label htmlFor="name" className="form-label">Name: </label></div>
+        <div className="col-auto"><input type="text" id="name" value={name} className="form-control" onChange={e=>setName(e.target.value)} /></div>
+        <div className="col-auto"><label htmlFor="age" className="form-label">Age: </label></div>
+        <div className="col-auto"><input type="number" id="age" value={age} onChange={e=>setAge(e.target.valueAsNumber)} className="form-control" min={20} max={35} /></div>
+      </div>
+      <div className="my-3"> Name: <output>{name}</output>, Age: <output>{age}</output></div>
+      <hr />
 
-        <hr />
+     <button className="btn btn-outline-success" onClick={changeCar}>Change</button>
+      <hr />
 
-        <ul>
-          {
-            cars.map((car,ind)=>(
-              <li key={ind}>{car}</li>
-            ))
-          }
-        </ul>
-        <ol>
-          {
-            Object.entries(car).map(([key,value]) => (
-              <li key={key}>{key}: {value} </li>
-            ))
-          }
-        </ol>
-
-        <table className="table table-bordered">
-          <thead className="table-dark"><tr><th>Name</th><th>Type</th><th>Price</th></tr></thead>
-        <tbody>
-          {
-            data.map((elem)=>(
-                <tr key={elem.name}><td>{elem.name}</td><td>{elem.type}</td><td>{elem.price}</td></tr>
-            ))
-          }
-        </tbody>
-        </table>
-
-        <hr />
-
-        <Greet check="Avi"></Greet>
-
-        <p>{ (boo) ? "yes" : "no" }</p>
+      <div className="row align-items-center">
+        <div className="col-auto"><label htmlFor="cname" className="form-label">Car Name: </label></div>
+        <div className="col-auto"><input type="text" id="cname" name="name" value={car.name} className="form-control" onChange={changeCarData} /></div>
+        <div className="col-auto"><label htmlFor="power" className="form-label">Power: </label></div>
+        <div className="col-auto"><input type="number" id="power" name="power" value={car.power} onChange={changeCarData} className="form-control" /></div> 
+         <div className="col-auto"><label htmlFor="torque" className="form-label">Torque: </label></div>
+        <div className="col-auto"><input type="number" id="torque" name="torque" value={car.torque} onChange={changeCarData} className="form-control" /></div> 
+        <div className="col-auto">Name: {car.name}, power: {car.power}, torque: {car.torque}</div>
+      </div>
 
 
       </main>
