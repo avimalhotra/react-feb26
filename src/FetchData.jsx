@@ -4,10 +4,12 @@ export default function FetchCars(){
      const [data,setData]=useState([]);
      const [loading, setLoading] = useState(true);
      const [error, setError] = useState(null);
-     // const [sort,setSort]=useState({key:null, direction:"asc"});
-     
+     const [sort,setSort]=useState({key:null, direction:"asc"});
 
-     async function  fetchData(){
+     // https://fakestoreapi.com/products
+     // https://jsonplaceholder.typicode.com/users
+
+     async function fetchData(){
           try{
                setLoading(true);
                const res= await fetch("https://www.techaltum.com/node/api");
@@ -27,43 +29,50 @@ export default function FetchCars(){
 
      useEffect(()=>{  fetchData() },[]);
 
+     function handleSort(key){
+     
+          let direction = 'asc';
 
-     // function handleSort(key){
-     //      console.log(key);
+          if (sort.key === key && sort.direction === 'asc') {
+               direction = 'desc';
+          }
 
-     //      if(key=="id"){
-     //           setData(data);
-     //      }
-     //      else if(key=="name"){
-     //           const sortedData=data.sort((a,b)=>{
-     //                if(a.name>b.name){ return 1 }
-     //                else{ return -1 }
-     //           });
-              
-     //           setData(sortedData);
-     //      }
+          setSort({ key, direction });
+
+          const sortedData = [...data].sort((a, b) => {
+               if (a[key] < b[key]) {
+                    return direction === 'asc' ? -1 : 1;
+               }
+               if (a[key] > b[key]) {
+                    return direction === 'asc' ? 1 : -1;
+               }
+               return 0;
+          });
+
+          setData(sortedData);
           
-     // }
+     }
 
+   
      if(loading) return <div><h3>Loading Data ......</h3></div>;
      if (error) return <div>Error: {error.message}</div>;
 
      return (
           <section>
                <h3>Cars Data</h3>
-               <table className="table table-bordered">
+               <table className="table table-bordered border-primary fetchcars">
                     <thead>
                          <tr>
                               <th>S No</th>
-                              <th>Name</th>
-                              <th>Type</th>
-                              <th>Price</th>
+                              <th >Name <button  onClick={()=>handleSort("name")} className="btn btn-outline-primary float-end">{sort.key === 'name' ? (sort.direction === 'asc' ? '↑' : '↓') : '↑↓'}</button></th>
+                              <th>Type <button  onClick={()=>handleSort("type")} className="btn btn-outline-primary float-end">{sort.key === 'type' ? (sort.direction === 'asc' ? '↑' : '↓') : '↑↓'}</button></th>
+                              <th>Price <button  onClick={()=>handleSort("price")} className="btn btn-outline-primary float-end">{sort.key === 'price' ? (sort.direction === 'asc' ? '↑' : '↓') : '↑↓'}</button></th>
                          </tr>
                     </thead>
                     <tbody>
                          {
                               data.map((elem,ind)=>(
-                                   <tr key={ind}><td>{++ind}</td><td>{elem.name}</td><td>{elem.type}</td><td>{elem.price}</td></tr>
+                                   <tr key={ind}><td>{++ind}</td><td>{elem.name}</td><td>{elem.type}</td><td>{(elem.price).toLocaleString('en-in')}</td></tr>
                               ))
                          }
                     </tbody>
