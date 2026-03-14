@@ -27,7 +27,7 @@ export default function FetchCars(){
           }
      }
 
-     useEffect(()=>{  fetchData() },[]);
+     useEffect(()=>{ fetchData() },[]);
 
      function handleSort(key){
      
