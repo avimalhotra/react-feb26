@@ -7,71 +7,46 @@ import Course from "./Course";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 // import { useState } from "react";
-import { createContext, useContext, useEffect, useState } from "react";
-import Child from "./Child";
+// import Child from "./Child";
+import { useReducer, useState, useMemo } from "react";
 
 export default function App(){
 
-  const user={name:"ipsum", id:25};
+  const initialState={ count:0 };
 
-  
-  const CourseContext=createContext();       // create context
-  const ThemeContext=createContext();
+  function reducer(state,action){
+      switch(action.type){
+        case "inc": return {count: state.count + 1};
+        case "dec": return {count: state.count - 1};
+        case "reset": return {count: initialState.count};
+        default:  return state;
+      }
+  }
 
-
-  function CourseProvider(){
-    const course={name:"React", version: 19, next:true };
+  function Counter(){
+    
+    const [state,dispatch]=useReducer(reducer,initialState);
 
     return (
-      <CourseContext.Provider value={course}>
-          <CourseDetails />
-      </CourseContext.Provider>
+      <>
+      <h3>useReducer</h3>
+        <p>Initial value: {initialState.count}, Current value: {state.count}, </p>
+        <button onClick={()=>dispatch({type:"inc"})} className="btn btn-outline-primary me-3">Increment</button>
+        <button onClick={()=>dispatch({type:"dec"})} className="btn btn-outline-primary me-3">Decrement</button>
+        <button onClick={()=>dispatch({type:"reset"})} className="btn btn-outline-primary">Reset</button>
+      </>
     )
 
   }
 
-  function CourseDetails(){
-      const course=useContext(CourseContext);
 
-      return (
-        <>
-          <p>Course: {course.name}</p>
-          <p>Version: {course.version}</p>
-          <p>Next JS: { (course.next) ? "Available" : "Not Available" }</p>
-        </>
-      )
-  }
+  const [count,setCount]=useState(0);
 
-
-  function ThemeProvider(){
-
-    const [theme,setTheme]=useState(localStorage.theme||"light");
-
-    useEffect(()=>{
-        document.documentElement.setAttribute("data-bs-theme",theme);
-        localStorage.theme=theme;
-    },[theme]);
-
-    return (
-        <ThemeContext.Provider value={{theme,setTheme}}>
-            <ThemeConsumer />
-        </ThemeContext.Provider>
-    )
-
-  }
-
-  function ThemeConsumer(){
-      const {theme,setTheme}=useContext(ThemeContext);
-
-      return (
-        <>
-          <h3>Theme: {theme}</h3>
-          <button className="btn btn-primary" onClick={()=>setTheme( (theme=="light") ? "dark" :"light" )}>Toggle Theme</button>
-        </>
-      )
-  }
-
-
+  const expensiveTask=useMemo(()=>{
+      let result=0;
+      for(let i=0; i<1000000000; i++){ result+=i }
+      return result;
+  },[]);
 
 
   return (
@@ -80,17 +55,17 @@ export default function App(){
       <main>
         <h2>Main Page</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo quam eaque, labore porro quis rerum veniam veritatis alias, perspiciatis accusamus error. Doloremque est beatae expedita hic fugit eaque perspiciatis debitis.</p>
-       <p>Name: {user.name}, id: {user.id}</p>
         <hr />
 
-         <ThemeProvider />
+        <Counter />
+
         <hr />
-       <Child user={user} />
-          <hr />
-       <CourseProvider />
+        <h3>Use Memo</h3>
+        <p>Count : {count}</p>
+        <button className="btn btn-outline-primary" onClick={()=>setCount(count+1)}>Increment</button>
+        <p>Expensive Calculation : {expensiveTask}</p>
 
-      
-
+       
       </main>
       <Footer name="Isha" />
     </div>
