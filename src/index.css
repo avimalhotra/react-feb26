@@ -1,1 +1,19 @@
-.fetchcars .btn-outline-primary{ width: 50px;}
+.overlay{
+     position: fixed;
+     background: #0008;
+     left: 0;
+     right: 0;
+     top: 0;
+     bottom: 0;
+}
+.popup{ 
+     background: #fff;
+     padding: 1rem;
+     position: fixed;
+     left: 50%;
+     top: 50%;
+     transform: translate(-50%,-50%);
+     padding: 1rem;
+     border-radius: .5rem;
+     border: 1px solid #aaa;
+}

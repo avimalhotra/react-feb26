@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 export default function FetchCars(){
      const [data,setData]=useState([]);
-     const [loading, setLoading] = useState(true);
      const [error, setError] = useState(null);
      const [sort,setSort]=useState({key:null, direction:"asc"});
 
@@ -11,7 +10,7 @@ export default function FetchCars(){
 
      async function fetchData(){
           try{
-               setLoading(true);
+               // setLoading(true);
                const res= await fetch("https://www.techaltum.com/node/api");
                if (!res.ok) { throw new Error(`error: ${res.status}`);}
                const data=await res.json();
@@ -22,9 +21,7 @@ export default function FetchCars(){
                console.warn(err.message);
                setError(err);
           }
-          finally{
-               setLoading(false);
-          }
+          
      }
 
      useEffect(()=>{ fetchData() },[]);
@@ -54,7 +51,7 @@ export default function FetchCars(){
      }
 
    
-     if(loading) return <div><h3>Loading Data ......</h3></div>;
+     // if(loading) return <div><h3>Loading Data ......</h3></div>;
      if (error) return <div>Error: {error.message}</div>;
 
      return (
