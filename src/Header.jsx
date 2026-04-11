@@ -1,6 +1,6 @@
 export default function Header(){
      
-     const x="App Component";
+     const x="Tech Altum";
 
      return (
           <header>

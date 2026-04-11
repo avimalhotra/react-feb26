@@ -1,14 +1,11 @@
-import { useParams, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 
-export default function CoursePage(){
-     const {course}=useParams();
-
+export default function CoursesPage(){
      return (
           <>
-               <h2>Course : {course} </h2>
-               <p> We offer {course} course with Project  </p>
+               <h2>Courses Available</h2>
 
-               <h3>Other Courses</h3>
+               <p>At Tech Altum, we have following Courses: </p>
                <ol>
                     <li><Link to="/courses/react">React</Link></li>
                     <li><Link to="/courses/angular">Angular</Link></li>
